@@ -31,7 +31,7 @@ public class Counsel extends BaseEntity {
     @Column(nullable = false, updatable = false)
     private Long counselId;
 
-    @Column(nullable = false, columnDefinition = "datetime COMMENT '신청일자")
+    @Column(columnDefinition = "datetime DEFAULT NULL COMMENT '신청일자'")
     private LocalDateTime appliedAt;
 
     @Column(nullable = false, columnDefinition = "varchar(12) COMMENT '상담 요청자'")
@@ -46,7 +46,10 @@ public class Counsel extends BaseEntity {
     @Column(columnDefinition = "text DEFAULT NULL COMMENT '상담메모'")
     private String memo;
 
-    @Column(columnDefinition = "varchar(50) DEFAULT NULL COMMENT '상세 주소'")
+    @Column(columnDefinition = "varchar(50) DEFAULT NULL COMMENT '주소'")
+    private String address;
+
+    @Column(columnDefinition = "varchar(50) DEFAULT NULL COMMENT '주소 상세'")
     private String addressDetail;
 
     @Column(columnDefinition = "varchar(5) DEFAULT NULL COMMENT '우편번호'")
