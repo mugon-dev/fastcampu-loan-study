@@ -3,6 +3,8 @@ package com.conny.loan.service;
 import com.conny.loan.domain.Counsel;
 import com.conny.loan.dto.CounselDTO.Request;
 import com.conny.loan.dto.CounselDTO.Response;
+import com.conny.loan.exception.BaseException;
+import com.conny.loan.exception.ResultType;
 import com.conny.loan.repository.CounselRepository;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
@@ -22,5 +24,13 @@ public class CounselServiceImpl implements CounselService {
         counsel.setAppliedAt(LocalDateTime.now());
         Counsel created = counselRepository.save(counsel);
         return modelMapper.map(created, Response.class);
+    }
+
+    @Override
+    public Response get(Long counselId) {
+        Counsel counsel = counselRepository.findById(counselId).orElseThrow(() -> {
+            throw new BaseException(ResultType.SYSTEM_ERROR);
+        });
+        return modelMapper.map(counsel, Response.class);
     }
 }
