@@ -5,6 +5,7 @@ import com.conny.loan.dto.JudgmentDTO.Response;
 import com.conny.loan.dto.ResponseDTO;
 import com.conny.loan.service.JudgmentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,4 +42,9 @@ public class JudgmentController extends AbstractController {
         return ok(judgmentService.update(judgmentId, request));
     }
 
+    @DeleteMapping("/{judgmentId}")
+    public ResponseDTO<Void> delete(@PathVariable Long judgmentId) {
+        judgmentService.delete(judgmentId);
+        return ok();
+    }
 }
