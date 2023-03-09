@@ -7,11 +7,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FileStorageService {
 
-    void save(MultipartFile file);
+    void save(Long applicationId, MultipartFile file);
 
-    Resource load(String filename);
+    Resource load(Long applicationId, String file);
 
-    Stream<Path> loadAll();
+    void deleteAll(Long applicationId);
 
-    void deleteAll();
+    Stream<Path> loadAll(Long applicationId);
 }
