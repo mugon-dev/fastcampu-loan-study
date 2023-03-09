@@ -5,6 +5,7 @@ import com.conny.loan.dto.ApplicationDTO.Response;
 import com.conny.loan.dto.ResponseDTO;
 import com.conny.loan.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,5 +35,11 @@ public class ApplicationController extends AbstractController {
     public ResponseDTO<Response> update(@PathVariable Long applicationId,
         @RequestBody Request request) {
         return ok(applicationService.update(applicationId, request));
+    }
+
+    @DeleteMapping("/{applicationId}")
+    public ResponseDTO<Void> delete(@PathVariable Long applicationId) {
+        applicationService.delete(applicationId);
+        return ok();
     }
 }
