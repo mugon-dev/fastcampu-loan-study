@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import com.conny.loan.domain.Application;
 import com.conny.loan.domain.Judgment;
+import com.conny.loan.dto.ApplicationDTO.GrantAmount;
 import com.conny.loan.dto.JudgmentDTO.Request;
 import com.conny.loan.dto.JudgmentDTO.Response;
 import com.conny.loan.repository.ApplicationRepository;
@@ -137,5 +138,31 @@ class JudgmentServiceImplTest {
         judgmentService.delete(targetId);
 
         assertThat(entity.getIsDeleted()).isSameAs(true);
+    }
+
+    @Test
+    void Should_ReturnUpdatedResponseOfExistApplicationEntity_When_RequestGrantApprovalAmountOfJudgmentInfo() {
+        Long findId = 1L;
+
+        Judgment judgmentEntity = Judgment.builder()
+                                          .name("Member Kim")
+                                          .applicationId(findId)
+                                          .approvalAmount(BigDecimal.valueOf(50000000))
+                                          .build();
+
+        Application applicationEntity = Application.builder()
+                                                   .applicationId(findId)
+                                                   .approvalAmount(BigDecimal.valueOf(50000000))
+                                                   .build();
+
+        when(judgmentRepository.findById(findId)).thenReturn(Optional.ofNullable(judgmentEntity));
+        when(applicationRepository.findById(findId)).thenReturn(
+            Optional.ofNullable(applicationEntity));
+        when(applicationRepository.save(any(Application.class))).thenReturn(applicationEntity);
+
+        GrantAmount actual = judgmentService.grant(findId);
+
+        assertThat(actual.getApplicationId()).isSameAs(findId);
+        assertThat(actual.getApprovalAmount()).isSameAs(judgmentEntity.getApprovalAmount());
     }
 }

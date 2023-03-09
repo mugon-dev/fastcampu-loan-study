@@ -1,5 +1,6 @@
 package com.conny.loan.service;
 
+import com.conny.loan.dto.ApplicationDTO.GrantAmount;
 import com.conny.loan.dto.JudgmentDTO.Request;
 import com.conny.loan.dto.JudgmentDTO.Response;
 
@@ -14,4 +15,6 @@ public interface JudgmentService {
     Response update(Long judgmentId, Request request);
 
     void delete(Long judgmentId);
+
+    GrantAmount grant(Long judgmentId);
 }

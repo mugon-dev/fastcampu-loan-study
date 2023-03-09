@@ -1,6 +1,9 @@
 package com.conny.loan.service;
 
+import com.conny.loan.domain.Application;
 import com.conny.loan.domain.Judgment;
+import com.conny.loan.dto.ApplicationDTO;
+import com.conny.loan.dto.ApplicationDTO.GrantAmount;
 import com.conny.loan.dto.JudgmentDTO;
 import com.conny.loan.dto.JudgmentDTO.Request;
 import com.conny.loan.dto.JudgmentDTO.Response;
@@ -8,6 +11,7 @@ import com.conny.loan.exception.BaseException;
 import com.conny.loan.exception.ResultType;
 import com.conny.loan.repository.ApplicationRepository;
 import com.conny.loan.repository.JudgmentRepository;
+import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -80,6 +84,25 @@ public class JudgmentServiceImpl implements JudgmentService {
         judgment.setIsDeleted(true);
 
         judgmentRepository.save(judgment);
+    }
+
+    @Override
+    public GrantAmount grant(Long judgmentId) {
+        Judgment judgment = judgmentRepository.findById(judgmentId).orElseThrow(() -> {
+            throw new BaseException(ResultType.SYSTEM_ERROR);
+        });
+
+        Long applicationId = judgment.getApplicationId();
+        Application application = applicationRepository.findById(applicationId).orElseThrow(() -> {
+            throw new BaseException(ResultType.SYSTEM_ERROR);
+        });
+
+        BigDecimal approvalAmount = judgment.getApprovalAmount();
+        application.setApprovalAmount(approvalAmount);
+
+        applicationRepository.save(application);
+
+        return modelMapper.map(application, ApplicationDTO.GrantAmount.class);
     }
 
     private boolean isPresentApplication(Long applicationId) {
