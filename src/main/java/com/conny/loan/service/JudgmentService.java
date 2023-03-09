@@ -6,4 +6,8 @@ import com.conny.loan.dto.JudgmentDTO.Response;
 public interface JudgmentService {
 
     Response create(Request request);
+
+    Response get(Long judgmentId);
+
+    Response getJudgmentOfApplication(Long applicationId);
 }
