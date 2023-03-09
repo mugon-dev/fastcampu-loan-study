@@ -63,4 +63,26 @@ class ApplicationServiceImplTest {
         Response actual = applicationService.get(findId);
         assertThat(actual.getApplicationId()).isSameAs(entity.getApplicationId());
     }
+
+    @Test
+    void Should_ReturnUpdatedResponseOfExistApplicationEntity_When_RequestUpdateExistApplicationInfo() {
+        Long findId = 1L;
+
+        Application entity = Application.builder()
+                                        .applicationId(1L)
+                                        .name("Member Kim")
+                                        .build();
+
+        Request request = Request.builder()
+                                 .name("Member Lee")
+                                 .build();
+
+        when(applicationRepository.save(any(Application.class))).thenReturn(entity);
+        when(applicationRepository.findById(findId)).thenReturn(Optional.ofNullable(entity));
+
+        Response actual = applicationService.update(findId, request);
+
+        assertThat(actual.getApplicationId()).isSameAs(findId);
+        assertThat(actual.getName()).isSameAs(request.getName());
+    }
 }
