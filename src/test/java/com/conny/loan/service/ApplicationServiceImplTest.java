@@ -9,6 +9,7 @@ import com.conny.loan.dto.ApplicationDTO.Request;
 import com.conny.loan.dto.ApplicationDTO.Response;
 import com.conny.loan.repository.ApplicationRepository;
 import java.math.BigDecimal;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -47,7 +48,19 @@ class ApplicationServiceImplTest {
 
         when(applicationRepository.save(any(Application.class))).thenReturn(entity);
         Response actual = applicationService.create(request);
-        
+
         assertThat(actual.getName()).isSameAs(entity.getName());
+    }
+
+    @Test
+    void Should_ReturnResponseOfExistApplicationEntity_When_RequestExistApplicationId() {
+        Long findId = 1L;
+        Application entity = Application.builder()
+                                        .applicationId(1L)
+                                        .build();
+        when(applicationRepository.findById(findId)).thenReturn(Optional.ofNullable(entity));
+
+        Response actual = applicationService.get(findId);
+        assertThat(actual.getApplicationId()).isSameAs(entity.getApplicationId());
     }
 }
