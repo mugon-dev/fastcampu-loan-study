@@ -12,11 +12,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
-public class FIleStorageServiceImpl implements FIleStorageService {
+public class FileStorageServiceImpl implements FileStorageService {
 
     @Value("${spring.servlet.multipart.location}")
     private String uploadPath;
@@ -57,5 +58,10 @@ public class FIleStorageServiceImpl implements FIleStorageService {
         } catch (Exception e) {
             throw new BaseException(ResultType.SYSTEM_ERROR);
         }
+    }
+
+    @Override
+    public void deleteAll() {
+        FileSystemUtils.deleteRecursively(Paths.get(uploadPath).toFile());
     }
 }

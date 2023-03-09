@@ -5,11 +5,13 @@ import java.util.stream.Stream;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface FIleStorageService {
+public interface FileStorageService {
 
     void save(MultipartFile file);
 
     Resource load(String filename);
 
     Stream<Path> loadAll();
+
+    void deleteAll();
 }
